@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: amd-vulkan-smoke-test
+  namespace: gpu-workloads
+spec:
+  restartPolicy: Never
+
+  tolerations:
+    - key: homelab.io/gpu
+      operator: Equal
+      value: amd
+      effect: NoSchedule
+
+  containers:
+    - name: vulkan
+      image: ubuntu:24.04
+
+      resources:
+        requests:
+          homelab.io/amd-gpu: 1
+        limits:
+          homelab.io/amd-gpu: 1
+
+      command:
+        - /bin/bash
+        - -c
+        - |
+          set -eux
+
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            mesa-vulkan-drivers \
+            vulkan-tools
+
+          echo
+          echo "===== ASSIGNED DEVICES ====="
+          ls -l /dev/dri/renderD128
+          ls -l /dev/kfd
+
+          echo
+          echo "===== VULKAN ====="
+          vulkaninfo --summary
