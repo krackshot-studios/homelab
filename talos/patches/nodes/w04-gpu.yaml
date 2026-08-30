@@ -1,0 +1,17 @@
+machine:
+  install:
+    image: factory.talos.dev/metal-installer/aeec243e3a4c2a14f9ba74b1a8c7662f03eea658a7ea5f1c26fdd491280c88f8:v1.13.9
+  nodeLabels:
+    homelab.io/gpu: amd
+    homelab.io/gpu-model: rx6750xt
+  kubelet:
+    extraConfig:
+      registerWithTaints:
+        - key: homelab.io/gpu
+          value: amd
+          effect: NoSchedule
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: off
+hostname: talos-w04-gpu

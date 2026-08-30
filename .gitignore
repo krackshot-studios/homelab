@@ -1,0 +1,27 @@
+# macos
+.DS_Store
+
+# talos generated configurations
+talos/generated/**
+
+# plaintext talos secrets
+talos/secrets/*
+!talos/secrets/*.sops.yaml
+
+# talos client configuration
+talosconfig
+*.talosconfig
+
+# kubernetes credentials
+kubeconfig
+*.kubeconfig
+
+# age private keys
+*.agekey
+keys.txt
+
+# temporary/editor files
+*.tmp
+*.bak
+*.swp
+*~
