@@ -1,8 +1,6 @@
 ipam:
   mode: kubernetes
-
 kubeProxyReplacement: false
-
 securityContext:
   capabilities:
     ciliumAgent:
@@ -21,8 +19,45 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+operator:
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+envoy:
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+    replicas: 2
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  ui:
+    enabled: true
+    service:
+      type: ClusterIP
+  metrics:
+    enableOpenMetrics: true
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+    serviceMonitor:
+      enabled: true

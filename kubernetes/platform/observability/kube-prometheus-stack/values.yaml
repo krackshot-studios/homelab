@@ -1,0 +1,103 @@
+# Homelab observability bootstrap.
+#
+# Persistence is intentionally disabled until Kubernetes storage is backed
+# by TrueNAS. Host-level node-exporter is intentionally postponed so the
+# observability namespace can remain PodSecurity baseline.
+
+nodeExporter:
+  enabled: false
+
+grafana:
+  enabled: true
+
+  persistence:
+    enabled: false
+
+  service:
+    type: ClusterIP
+
+  defaultDashboardsTimezone: browser
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+prometheus:
+  enabled: true
+
+  prometheusSpec:
+    retention: 7d
+
+    walCompression: true
+
+    enableAdminAPI: false
+
+    resources:
+      requests:
+        cpu: 250m
+        memory: 1Gi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+
+    # Allow Prometheus to discover ServiceMonitor/PodMonitor resources
+    # in other namespaces. We will use this for Cilium and Hubble.
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+
+    podMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
+    podMonitorNamespaceSelector: {}
+
+alertmanager:
+  enabled: true
+
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+kubeStateMetrics:
+  enabled: true
+
+# These Talos control-plane components expose their metrics conservatively.
+# Do not widen control-plane bind addresses merely to make a dashboard green.
+# We will handle their observability deliberately later.
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeApiServer:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+coreDns:
+  enabled: true
+
+kubeProxy:
+  enabled: true
+
+defaultRules:
+  rules:
+    etcd: false
+    kubeControllerManager: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    nodeExporterAlerting: false
+    nodeExporterRecording: false
