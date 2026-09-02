@@ -1,19 +1,21 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: allow-client-to-frontend
   namespace: network-policy-lab
 spec:
-  podSelector:
+  endpointSelector:
     matchLabels:
       app: frontend
-  policyTypes:
-    - Ingress
   ingress:
-    - from:
-        - podSelector:
-            matchLabels:
-              app: client
-      ports:
-        - protocol: TCP
-          port: 8080
+    - fromEndpoints:
+        - matchLabels:
+            app: client
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+          rules:
+            http:
+              - method: "GET"
+                path: "/"
