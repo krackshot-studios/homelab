@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: truenas-csi-config
+  namespace: truenas-csi
+data:
+  truenasURL: "wss://192.168.40.105/api/current"
+  truenasInsecure: "true"
+
+  defaultPool: "tank"
+  nfsServer: "192.168.40.105"
+
+  iscsiPortal: "192.168.40.105:3260"
+  nvmeofPortal: "192.168.40.105:4420"
+  iscsiIQNBase: "iqn.2000-01.io.truenas"

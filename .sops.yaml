@@ -1,3 +1,8 @@
 creation_rules:
   - path_regex: ^talos/secrets/.*\.ya?ml$
     age: age1tuevyl5qpv4cl38effc5vandvgqtrsa6pn3fwsz4m34lyaksfvkqdfwnxf
+
+  - path_regex: ^kubernetes/.*/secrets/.*\.sops\.ya?ml$
+    encrypted_regex: '^(data|stringData)$'
+    age: age1tuevyl5qpv4cl38effc5vandvgqtrsa6pn3fwsz4m34lyaksfvkqdfwnxf
+

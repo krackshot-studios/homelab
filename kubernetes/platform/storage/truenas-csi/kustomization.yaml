@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - vendor/truenas-csi-driver.yaml
+  - storageclasses/truenas-nfs.yaml
+
+patches:
+  - path: patches/namespace.yaml
+  - path: patches/configmap.yaml
+  - path: patches/talos-nfs-only.yaml
+
+images:
+  - name: ghcr.io/truenas/truenas-csi
+    newName: quay.io/truenas_solutions/truenas-csi
+    newTag: v1.2.0
